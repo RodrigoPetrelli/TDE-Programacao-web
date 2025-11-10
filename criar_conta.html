@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Criar Conta - Rede Social</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <main class="center">
+        <form id="registerForm" class="card" method="post" action="register.php" novalidate>
+            <h1 class="title">Criar Conta</h1>
+
+            <label class="field">
+                <span class="label">Nome completo</span><br/>
+                <input id="name" name="name" type="text" required/>
+                <small class="error" data-for="name"></small>
+            </label><br/>
+
+            <label class="field">
+                <span class="label">E-mail</span>
+                <input id="email" name="email" type="email" required />
+                <small class="error" data-for="email"></small>
+            </label>
+
+            <label class="field">
+                <span class="label">Senha</span>
+                <div class="password-wrap">
+                    <input id="password" name="password" type="password" required minlength="6" />
+                    <button type="button" id="togglePw" class="btn-icon" aria-label="Mostrar senha">👁️</button>
+                </div>
+                <small class="error" data-for="password"></small>
+            </label>
+
+            <label class="field">
+                <span class="label">Confirmar Senha</span>
+                <input id="password_confirm" name="password_confirm" type="password" required />
+                <small class="error" data-for="password_confirm"></small>
+            </label>
+
+            <div class="actions">
+                <button type="submit" class="btn primary">Criar Conta</button>
+                <a class="link" href="index.html">Já tem conta? Entre aqui</a>
+            </div>
+
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+        </form>
+    </main>
+
+    <script src="js/register.js"></script>
+</body>
+</html>

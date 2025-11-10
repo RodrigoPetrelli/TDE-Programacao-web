@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard - Sistema Bancário</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Banco Digital</h1>
+            <div class="user-info">
+                Bem-vindo, <span id="userName"></span>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="balance-card">
+                <h2>Saldo Disponível</h2>
+                <p class="balance" id="balance">R$ 0,00</p>
+            </div>
+
+            <div class="actions-grid">
+                <a href="transferencia.html" class="action-card">
+                    <i class="icon">💸</i>
+                    <h3>Transferência</h3>
+                </a>
+                <a href="deposito.html" class="action-card">
+                    <i class="icon">💰</i>
+                    <h3>Depósito</h3>
+                </a>
+                <a href="extrato.html" class="action-card">
+                    <i class="icon">📊</i>
+                    <h3>Extrato</h3>
+                </a>
+                <a href="pagamentos.html" class="action-card">
+                    <i class="icon">📝</i>
+                    <h3>Pagamentos</h3>
+                </a>
+            </div>
+
+            <div class="recent-transactions">
+                <h2>Transações Recentes</h2>
+                <div id="transactionsList" class="transactions-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

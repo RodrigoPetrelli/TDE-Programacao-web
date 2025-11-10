@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Transferência - Sistema Bancário</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Transferência</h1>
+            <a href="dashboard.html" class="btn-back">Voltar</a>
+        </div>
+    </nav>
+
+    <main class="container form-page">
+        <div class="card">
+            <form id="transferForm" class="form">
+                <div class="field">
+                    <label>Conta Destino</label>
+                    <input type="text" name="account" placeholder="Digite o número da conta" required>
+                </div>
+
+                <div class="field">
+                    <label>Valor</label>
+                    <input type="number" name="amount" placeholder="R$ 0,00" step="0.01" min="0.01" required>
+                </div>
+
+                <div class="field">
+                    <label>Descrição</label>
+                    <input type="text" name="description" placeholder="Opcional">
+                </div>
+
+                <button type="submit" class="btn primary">Transferir</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

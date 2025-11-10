@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Extrato - Sistema Bancário</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Extrato</h1>
+            <a href="dashboard.html" class="btn-back">Voltar</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <div class="statement-filters">
+                <select class="form-select">
+                    <option>Últimos 7 dias</option>
+                    <option>Últimos 15 dias</option>
+                    <option>Últimos 30 dias</option>
+                </select>
+            </div>
+
+            <div class="statement-list">
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <strong>Transferência enviada</strong>
+                        <span>João Silva</span>
+                        <small>12/11/2023</small>
+                    </div>
+                    <div class="transaction-amount debit">
+                        - R$ 150,00
+                    </div>
+                </div>
+
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <strong>Depósito recebido</strong>
+                        <span>Maria Santos</span>
+                        <small>11/11/2023</small>
+                    </div>
+                    <div class="transaction-amount credit">
+                        + R$ 300,00
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

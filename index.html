@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login - Rede Social</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <main class="center">
+        <form id="loginForm" class="card" method="post" action="login.php" novalidate>
+            <h1 class="title">Entrar</h1>
+
+            <label class="field">
+                <span class="label">E-mail</span>
+                <input id="email" name="email" type="email" required />
+                <small class="error" data-for="email"></small>
+            </label>
+
+            <label class="field">
+                <span class="label">Senha</span>
+                <div class="password-wrap">
+                    <input id="password" name="password" type="password" required minlength="6" />
+                    <button type="button" id="togglePw" class="btn-icon" aria-label="Mostrar senha">👁️</button>
+                </div>
+                <small class="error" data-for="password"></small>
+            </label>
+
+            <label class="field checkbox">
+                <input type="checkbox" name="remember" id="remember" />
+                <span>Manter conectado</span>
+            </label>
+
+            <div class="actions">
+                <button type="submit" class="btn primary">Entrar</button>
+                <a href="criar_conta.html" class="link">Criar conta</a>
+            </div>
+
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+        </form>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
