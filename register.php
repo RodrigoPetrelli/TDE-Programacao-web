@@ -1,70 +1,45 @@
 <?php
-header('Content-Type: application/json');
-session_start();
 require_once 'config.php';
+header('Content-Type: application/json; charset=utf-8');
 
-function send_response($success, $message = '', $errors = []) {
-    echo json_encode([
-        'success' => $success,
-        'message' => $message,
-        'errors' => $errors
-    ]);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'message' => 'Método não permitido']);
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    send_response(false, 'Método inválido');
-}
-
-$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$name = trim($_POST['name'] ?? '');
+$email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 $password_confirm = $_POST['password_confirm'] ?? '';
 
 $errors = [];
 
-if (!$name || strlen($name) < 3) {
-    $errors['name'] = 'Nome deve ter no mínimo 3 caracteres';
-}
-
-if (!$email) {
-    $errors['email'] = 'Email inválido';
-}
-
-if (strlen($password) < 6) {
-    $errors['password'] = 'Senha deve ter no mínimo 6 caracteres';
-}
-
-if ($password !== $password_confirm) {
-    $errors['password_confirm'] = 'As senhas não conferem';
-}
+if (!$name) $errors['name'] = 'Nome é obrigatório';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors['email'] = 'E-mail inválido';
+if (strlen($password) < 6) $errors['password'] = 'A senha deve ter ao menos 6 caracteres';
+if ($password !== $password_confirm) $errors['password_confirm'] = 'As senhas não conferem';
 
 if ($errors) {
-    send_response(false, 'Por favor corrija os erros', $errors);
+    echo json_encode(['success' => false, 'errors' => $errors]);
+    exit;
 }
 
 try {
-    // Check if email exists
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
+    $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
     $stmt->execute([$email]);
     if ($stmt->fetch()) {
-        send_response(false, 'Este email já está cadastrado');
+        echo json_encode(['success' => false, 'message' => 'E-mail já cadastrado']);
+        exit;
     }
 
-    // Insert new user
-    $stmt = $pdo->prepare('
-        INSERT INTO users (name, email, password) 
-        VALUES (?, ?, ?)
-    ');
-    
-    $stmt->execute([
-        $name,
-        $email,
-        password_hash($password, PASSWORD_DEFAULT)
-    ]);
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare('INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)');
+    $stmt->execute([$name, $email, $hash]);
 
-    send_response(true, 'Conta criada com sucesso');
+    echo json_encode(['success' => true, 'message' => 'Conta criada com sucesso!']);
 } catch (PDOException $e) {
-    send_response(false, 'Erro ao criar conta');
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Erro no servidor']);
 }
 ?>

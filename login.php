@@ -1,57 +1,42 @@
 <?php
-header('Content-Type: application/json');
-session_start();
 require_once 'config.php';
+header('Content-Type: application/json; charset=utf-8');
 
-function send_response($success, $message = '', $errors = [], $data = []) {
-    echo json_encode(array_merge([
-        'success' => $success,
-        'message' => $message,
-        'errors' => $errors
-    ], $data));
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'message' => 'Método não permitido']);
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    send_response(false, 'Método inválido');
-}
-
-$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
-$remember = isset($_POST['remember']);
 
-$errors = [];
-
-if (!$email) {
-    $errors['email'] = 'Email inválido';
-}
-
-if (strlen($password) < 6) {
-    $errors['password'] = 'Senha deve ter no mínimo 6 caracteres';
-}
-
-if ($errors) {
-    send_response(false, 'Por favor corrija os erros', $errors);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !$password) {
+    echo json_encode(['success' => false, 'message' => 'E-mail ou senha inválidos']);
+    exit;
 }
 
 try {
-    $stmt = $pdo->prepare('SELECT id, name, password FROM users WHERE email = ?');
+    $stmt = $pdo->prepare('SELECT id, name, password_hash FROM users WHERE email = ? LIMIT 1');
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    if (!$user || !password_verify($password, $user['password'])) {
-        send_response(false, 'Email ou senha incorretos');
+    if (!$user || !password_verify($password, $user['password_hash'])) {
+        echo json_encode(['success' => false, 'message' => 'Credenciais incorretas']);
+        exit;
     }
 
+    // Sessão ativa
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['name'];
 
-    send_response(true, 'Login realizado com sucesso', [], [
+    echo json_encode([
+        'success' => true,
         'user_id' => $user['id'],
         'user_name' => $user['name']
     ]);
-
 } catch (PDOException $e) {
-    send_response(false, 'Erro ao processar login');
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Erro no servidor']);
 }
 ?>
